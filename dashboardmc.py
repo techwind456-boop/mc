@@ -1,12 +1,12 @@
 import streamlit as st
 import pandas as pd
 
-# --- URLs dos Google Sheets ---
+# --- Links das planilhas publicadas ---
 SITE_INFO_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0l6DdjIIyiCK6MVUkzMWlFVX7N3cw1709MA5Mg13AHe2Gt71Xy_KQm2zHMpUP-DYCk7dSRqT8B4jh/pub?gid=543934944&single=true&output=csv"
 TECHNICIAN_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0l6DdjIIyiCK6MVUkzMWlFVX7N3cw1709MA5Mg13AHe2Gt71Xy_KQm2zHMpUP-DYCk7dSRqT8B4jh/pub?gid=824764180&single=true&output=csv"
 FOLLOW_UP_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0l6DdjIIyiCK6MVUkzMWlFVX7N3cw1709MA5Mg13AHe2Gt71Xy_KQm2zHMpUP-DYCk7dSRqT8B4jh/pub?gid=363742714&single=true&output=csv"
 
-# --- Função para carregar dados ---
+# --- Carregar dados com cache para performance ---
 @st.cache_data
 def load_data():
     site_info = pd.read_csv(SITE_INFO_URL)
@@ -14,26 +14,30 @@ def load_data():
     follow_up = pd.read_csv(FOLLOW_UP_URL)
     return site_info, technician, follow_up
 
-# --- Botão de recarregar ---
+# --- Sidebar: botão de recarregar ---
 if st.sidebar.button("🔄 Recarregar dados"):
     st.cache_data.clear()
-    st.success("Cache limpo. Recarregue a página para atualizar os dados.")
+    st.experimental_rerun()
 
 # --- Carrega os dados ---
 site_info, technician, follow_up = load_data()
 
-# --- Título e interface ---
+# --- Interface principal ---
 st.title("📊 Blade Repair Dashboard")
 
-# --- Site Info ---
-st.subheader("Site Info")
-st.dataframe(site_info.head(20), use_container_width=True)
+tabs = st.tabs(["Site Info", "Technician", "Follow Up"])
 
-# --- Technician ---
-st.subheader("Technician")
-st.dataframe(technician.head(20), use_container_width=True)
+with tabs[0]:
+    st.subheader("Site Info")
+    st.dataframe(site_info, height=400)
 
-# --- Follow Up ---
-st.subheader("Follow Up")
-st.dataframe(follow_up.head(20), use_container_width=True)
+with tabs[1]:
+    st.subheader("Technician")
+    st.dataframe(technician, height=400)
+
+with tabs[2]:
+    st.subheader("Follow Up")
+    st.dataframe(follow_up, height=400)
+
+
 
