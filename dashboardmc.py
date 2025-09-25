@@ -14,10 +14,6 @@ def load_data():
     follow_up = pd.read_csv(FOLLOW_UP_URL)
     return site_info, technician, follow_up
 
-# --- Sidebar: botão de recarregar ---
-if st.button("🔄 Recarregar dados"):
-    st.cache_data.clear()
-    st.experimental_rerun()
 
 # --- Carrega os dados ---
 site_info, technician, follow_up = load_data()
