@@ -15,7 +15,7 @@ def load_data():
     return site_info, technician, follow_up
 
 # --- Sidebar: botão de recarregar ---
-if st.sidebar.button("🔄 Recarregar dados"):
+if st.button("🔄 Recarregar dados"):
     st.cache_data.clear()
     st.experimental_rerun()
 
@@ -29,15 +29,15 @@ tabs = st.tabs(["Site Info", "Technician", "Follow Up"])
 
 with tabs[0]:
     st.subheader("Site Info")
-    st.dataframe(site_info, height=400)
+    st.dataframe(site_info)
 
 with tabs[1]:
     st.subheader("Technician")
-    st.dataframe(technician, height=400)
+    st.dataframe(technician)
 
 with tabs[2]:
     st.subheader("Follow Up")
-    st.dataframe(follow_up, height=400)
+    st.dataframe(follow_up)
 
 
 
